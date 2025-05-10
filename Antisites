@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Device & Location Info</title>
+</head>
+<body>
+  <h2>Click to Share Your Info</h2>
+  <button onclick="collectInfo()">Share Info</button>
+
+  <pre id="output"></pre>
+
+  <script>
+    function collectInfo() {
+      const output = document.getElementById("output");
+
+      const deviceInfo = {
+        userAgent: navigator.userAgent,
+        platform: navigator.platform,
+        screenWidth: window.screen.width,
+        screenHeight: window.screen.height,
+      };
+
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(position => {
+          deviceInfo.latitude = position.coords.latitude;
+          deviceInfo.longitude = position.coords.longitude;
+          output.textContent = JSON.stringify(deviceInfo, null, 2);
+        }, err => {
+          deviceInfo.location = "Permission denied or unavailable";
+          output.textContent = JSON.stringify(deviceInfo, null, 2);
+        });
+      } else {
+        deviceInfo.location = "Geolocation not supported";
+        output.textContent = JSON.stringify(deviceInfo, null, 2);
+      }
+    }
+  </script>
+</body>
+</html>
